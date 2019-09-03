@@ -14,7 +14,7 @@ const StockApp = ()=>{
     return (
         <div>
             <h1>Discover Your Best.
-                Find your optimal stock portfolio based on modern portfoil theory.
+                Find your optimal stock portfolio based on modern portfolio theory.
             </h1>
 
            <div> 

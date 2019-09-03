@@ -1,11 +1,13 @@
 import React, {useState, useEffect} from 'react';
 import axios from 'axios';
-import { List } from 'semantic-ui-react'
+import { List, Input, Grid, Icon, Button } from 'semantic-ui-react'
+import './Search.css'
 const Search = ({stocks, setStocks})=>{
     const [query, setQuery] = useState('');
     const [results, setResults] = useState([]);
     const [message, setMessage] = useState('');
     const [suggestions, setSuggestions] = useState([]);
+    const stockDisplayLimit = 10;
     
     useEffect(()=>{
     
@@ -19,12 +21,12 @@ const Search = ({stocks, setStocks})=>{
             setResults(response.data.map(res=>res.symbol));
         });
     },[]);
-    // TODO: need to check if valid
-    const handleSubmit = (e)=>{
-        e.preventDefault();
-        if(stocks.includes(query)){
-            setStocks(stocks.concat(query));
+    
+    const handleAddStock = ()=>{
+        if(results.includes(query.toUpperCase()) && !stocks.includes(query)){
+            setStocks(stocks.concat(query.toUpperCase()));
             setQuery('');
+            setSuggestions([]);
         }
         else{
             setMessage('Nonvalid symbol');
@@ -34,24 +36,29 @@ const Search = ({stocks, setStocks})=>{
 
     const handleTextChange = (e) => {
         const value = e.target.value;
-        let count = 0;
         setQuery(value);
         setSuggestions([]);
         if(value.length > 0){
             const regex = new RegExp(`^${value}`, 'i');
-            // TODO: make not magic number for slice
-            setSuggestions(results.filter(v => regex.test(v)).slice(0,10));
+            setSuggestions(results.filter(v => (regex.test(v) && !stocks.includes(v))).slice(0,stockDisplayLimit));
         }
         
     }
-    const selectSuggestion = (s) =>{
-        setQuery(s);
+    const handleSubmit = (e) =>{
+        e.preventDefault();
+        // TODO: call server for calculations, get request on stocks
+    }
+    const selectSuggestion = (stock) =>{
+        setQuery(stock);
         setSuggestions([]);
     }
     const renderSuggestions = () => {
         return suggestions.map((s) => {
             return(
-                <List.Item>
+                <List.Item
+                    key = {s} 
+                >
+                    
                     <List.Content>
                         <List.Header
                             onClick={() => selectSuggestion(s)}
@@ -65,19 +72,37 @@ const Search = ({stocks, setStocks})=>{
 
         });
     }
+    const renderList = ()=>{
+        return (
+        <List divided selection verticalAlign='middle' 
+        className= 'SearchList'>
+            {renderSuggestions()}
+        </List>
+        )
+    }
 
     return (
-        <form onSubmit = {handleSubmit}>
-            <input
-                onChange = {handleTextChange}
-                value = {query}
-                type = 'text'
-                placeholder = 'ex: GOOG,AAPL...'
-            />
-            <button type = "submit">add stocks</button>
-            <List selection verticalAlign='middle'>
-                {renderSuggestions()}
-            </List>
+        <form onSubmit={handleSubmit}>
+            <Grid centered columns={1} verticalAlign='middle'>
+                <Grid.Column width ={8}>
+                    <Input
+                        focus
+                        icon ={<Icon name='add'  inverted circular link  
+                        onClick ={handleAddStock}/>}
+                        onChange={handleTextChange}
+                        value={query}
+                        type='text'
+                        placeholder='Stock (ex: GOOG...)'
+                        fluid
+                    />
+                    {!(suggestions.length === 0) && renderList()}
+
+
+                </Grid.Column>
+                <Grid.Row>
+                    <Button type = 'submit'>Calculate</Button>
+                </Grid.Row>
+            </Grid>
         </form>
     )
 }
