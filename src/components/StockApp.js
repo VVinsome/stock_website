@@ -1,5 +1,7 @@
 import React, {useState} from 'react';
-import Search from './Search'
+import Search from './Search';
+import Displaystocks from './DisplayStocks';
+import {Grid} from 'semantic-ui-react';
 const StockApp = ()=>{
     const [stocks, setStocks] = useState([]);
     const [stockTable, setStockTable] = useState([]);
@@ -7,10 +9,23 @@ const StockApp = ()=>{
 
     const display = showTable 
             ? {/* <TableStock/>  */}
-            : <Search
-                stocks = {stocks}
-                setStocks = {setStocks}
-               />;
+        : <Grid>
+            <Grid.Row>
+                <Search
+                    stocks={stocks}
+                    setStocks={setStocks}
+                />
+            </Grid.Row>
+            <Grid.Row>
+                <Displaystocks
+                    stocks={stocks}
+                    setStocks={setStocks}
+                />
+
+
+            </Grid.Row>
+        </Grid>
+
     return (
         <div>
             <h1>Discover Your Best.

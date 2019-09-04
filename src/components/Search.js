@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import axios from 'axios';
-import { List, Input, Grid, Icon, Button } from 'semantic-ui-react'
+import { List, Input, Grid, Icon,  Message } from 'semantic-ui-react'
 import './Search.css'
 const Search = ({stocks, setStocks})=>{
     const [query, setQuery] = useState('');
@@ -8,6 +8,7 @@ const Search = ({stocks, setStocks})=>{
     const [message, setMessage] = useState('');
     const [suggestions, setSuggestions] = useState([]);
     const stockDisplayLimit = 10;
+    const errorState = message? 'error' : '';
     
     useEffect(()=>{
     
@@ -22,16 +23,25 @@ const Search = ({stocks, setStocks})=>{
         });
     },[]);
     
-    const handleAddStock = ()=>{
-        if(results.includes(query.toUpperCase()) && !stocks.includes(query)){
-            setStocks(stocks.concat(query.toUpperCase()));
+    const addHelper = (stock) =>{
+        const formatS = stock.toUpperCase();
+        if (results.includes(formatS) && !stocks.includes(formatS)) {
+            setStocks(stocks.concat(formatS));
             setQuery('');
             setSuggestions([]);
+            setMessage('')
         }
         else{
-            setMessage('Nonvalid symbol');
+            setMessage('Unique or Valid Stock Symbols Only');
         }
+    }
 
+    const handleEnter = (e) =>{
+        const code = e.keyCode || e.charCode;
+        if(code == 13){
+            e.preventDefault();
+            addHelper(query);
+        }
     }
 
     const handleTextChange = (e) => {
@@ -44,25 +54,19 @@ const Search = ({stocks, setStocks})=>{
         }
         
     }
-    const handleSubmit = (e) =>{
-        e.preventDefault();
-        // TODO: call server for calculations, get request on stocks
-    }
-    const selectSuggestion = (stock) =>{
-        setQuery(stock);
-        setSuggestions([]);
-    }
+
     const renderSuggestions = () => {
         return suggestions.map((s) => {
             return(
                 <List.Item
+                onClick={() => addHelper(s)}
+
                     key = {s} 
                 >
                     
                     <List.Content>
                         <List.Header
-                            onClick={() => selectSuggestion(s)}
-                        >
+                                                   >
                             {s}
                         </List.Header>
                     </List.Content>
@@ -80,30 +84,42 @@ const Search = ({stocks, setStocks})=>{
         </List>
         )
     }
+    const renderErrorMessage = ()=>{
+        const errorNotification = message 
+            ? (< Message negative>
+                <Message.Header>{message}
+                </Message.Header>
+               </ Message>)
+            : '';
+        return errorNotification;
+    }
 
     return (
-        <form onSubmit={handleSubmit}>
-            <Grid centered columns={1} verticalAlign='middle'>
+            <Grid centered columns={1} >
                 <Grid.Column width ={8}>
+                    {renderErrorMessage()}
                     <Input
-                        focus
-                        icon ={<Icon name='add'  inverted circular link  
-                        onClick ={handleAddStock}/>}
+                        className = 'SearchBar' 
+                        className={errorState}
+                        icon ={
+                            <Icon name='add'  inverted circular link color = 'blue' 
+                            onClick ={()=>{addHelper(query)}}
+                            />}
                         onChange={handleTextChange}
+                        onKeyPress={handleEnter}
                         value={query}
                         type='text'
-                        placeholder='Stock (ex: GOOG...)'
+                        placeholder='Enter Portfolio (ex: GOOG...)'
                         fluid
+                        focus
+                        size = 'large'
                     />
                     {!(suggestions.length === 0) && renderList()}
 
 
                 </Grid.Column>
-                <Grid.Row>
-                    <Button type = 'submit'>Calculate</Button>
-                </Grid.Row>
+
             </Grid>
-        </form>
     )
 }
 
