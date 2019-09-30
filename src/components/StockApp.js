@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import Search from './Search';
 import Displaystocks from './DisplayStocks';
-import {Grid} from 'semantic-ui-react';
+import {Grid, Button} from 'semantic-ui-react';
 const StockApp = ()=>{
     const [stocks, setStocks] = useState([]);
     const [stockTable, setStockTable] = useState([]);
@@ -9,7 +9,7 @@ const StockApp = ()=>{
 
     const display = showTable 
             ? {/* <TableStock/>  */}
-        : <Grid>
+        : <Grid divided='vertically'>
             <Grid.Row>
                 <Search
                     stocks={stocks}
@@ -17,12 +17,18 @@ const StockApp = ()=>{
                 />
             </Grid.Row>
             <Grid.Row>
-                <Displaystocks
-                    stocks={stocks}
-                    setStocks={setStocks}
-                />
+                <Grid stackable columns={2}>
+                    <Displaystocks
+                        stocks={stocks}
+                        setStocks={setStocks}
+                    />
+                </Grid>
 
 
+
+            </Grid.Row>
+            <Grid.Row>
+                <Button>Calculate All</Button>
             </Grid.Row>
         </Grid>
 

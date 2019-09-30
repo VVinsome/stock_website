@@ -12,8 +12,8 @@ const Search = ({stocks, setStocks})=>{
     
     useEffect(()=>{
     
-    const url = 'https://cloud.iexapis.com/stable/'
-    const token ='?token=pk_52ae86a3ff14418d86666498498aa228';
+    const url = process.env.REACT_URL
+    const token = process.env.REACT_TOKEN;
     const searchURL = url+'/ref-data/iex/symbols'+token;
     axios
         .get(searchURL)
