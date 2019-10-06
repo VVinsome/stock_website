@@ -11,9 +11,9 @@ const Search = ({stocks, setStocks})=>{
     const errorState = message? 'error' : '';
     
     useEffect(()=>{
-    
-    const url = process.env.REACT_URL
-    const token = process.env.REACT_TOKEN;
+    const url = 'https://cloud.iexapis.com/stable/';
+    const token = '?token=pk_52ae86a3ff14418d86666498498aa228';
+
     const searchURL = url+'/ref-data/iex/symbols'+token;
     axios
         .get(searchURL)
@@ -38,7 +38,7 @@ const Search = ({stocks, setStocks})=>{
 
     const handleEnter = (e) =>{
         const code = e.keyCode || e.charCode;
-        if(code == 13){
+        if(code === 13){
             e.preventDefault();
             addHelper(query);
         }

@@ -1,8 +1,8 @@
-import React, {useState} from 'react';
-import {Grid, Button, Icon} from 'semantic-ui-react';
+import React, {useEffect} from 'react';
+import { Icon, Table} from 'semantic-ui-react';
 
-const DisplayStocks = ({stocks,setStocks}) =>{
-
+const DisplayStocks = ({stockTable,setStockTable, stocks,setStocks}) =>{
+    const captured = stockTable
 
     const removeStock = (s)=>{
         setStocks(stocks.filter(stock=>{
@@ -12,30 +12,33 @@ const DisplayStocks = ({stocks,setStocks}) =>{
     
     return (
         stocks.map((stock,idx)=>{
+            setStockTable = {};
             return (
-               <Grid.Column width ={3} key={idx}>
+                <Table.Row key = {idx}>
+                    <Table.Cell>{stock}</Table.Cell>
+                    <Table.Cell>{captured.hasOwnProperty(stock) && captured[stock].single_exp_return}</Table.Cell>
+                    <Table.Cell>{captured.hasOwnProperty(stock) && captured[stock].std}</Table.Cell>
+                    <Table.Cell>{captured.hasOwnProperty(stock) && captured[stock].weight}</Table.Cell>
+                    <Table.Cell textAlign='center' selectable>
+                                <Icon 
+                                    name='remove'
+                                    onClick={() => removeStock(stock)}
+                                    value={stock}
+                                    color = 'red'
+                                />
 
-                    <Button animated='fade'
-                        onClick={()=>removeStock(stock)}
-                        value={stock}
-                        color='blue'
 
-                    >
-                        <Button.Content visible > 
-                            {stock}
-                        </Button.Content>
-                        <Button.Content hidden icon='true'>
+                    </Table.Cell>
+                    
+                </Table.Row>
 
-                            <Icon name='remove' />
-                            {stock}
-                        </Button.Content>
-                    </Button>
 
-                </Grid.Column>
             )
 
-        })
+        }
 
+        )
+ 
     )
 
 }
