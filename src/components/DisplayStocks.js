@@ -1,7 +1,7 @@
 import React, {useEffect} from 'react';
 import { Icon, Table} from 'semantic-ui-react';
 
-const DisplayStocks = ({stockTable,setStockTable, stocks,setStocks}) =>{
+const DisplayStocks = ({stockTable, stocks,setStocks}) =>{
     const captured = stockTable
 
     const removeStock = (s)=>{
@@ -12,13 +12,12 @@ const DisplayStocks = ({stockTable,setStockTable, stocks,setStocks}) =>{
     
     return (
         stocks.map((stock,idx)=>{
-            setStockTable = {};
             return (
                 <Table.Row key = {idx}>
                     <Table.Cell>{stock}</Table.Cell>
-                    <Table.Cell>{captured.hasOwnProperty(stock) && captured[stock].single_exp_return}</Table.Cell>
+                    <Table.Cell>{captured.hasOwnProperty(stock) && captured[stock].single_exp_return * 252}</Table.Cell>
                     <Table.Cell>{captured.hasOwnProperty(stock) && captured[stock].std}</Table.Cell>
-                    <Table.Cell>{captured.hasOwnProperty(stock) && captured[stock].weight}</Table.Cell>
+                    <Table.Cell>{captured.hasOwnProperty(stock) && captured[stock].weight * 100}</Table.Cell>
                     <Table.Cell textAlign='center' selectable>
                                 <Icon 
                                     name='remove'

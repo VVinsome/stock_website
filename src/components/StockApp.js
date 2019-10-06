@@ -33,7 +33,7 @@ const StockApp = ()=>{
                     <Table.Header>
                         <Table.Row>
                             <Table.HeaderCell>Symbol</Table.HeaderCell>
-                            <Table.HeaderCell>Year log return</Table.HeaderCell>
+                            <Table.HeaderCell>Return</Table.HeaderCell>
                             <Table.HeaderCell>StDev</Table.HeaderCell>
                             <Table.HeaderCell>Optimal Asset %</Table.HeaderCell>
                             <Table.HeaderCell>Close</Table.HeaderCell>
@@ -42,12 +42,11 @@ const StockApp = ()=>{
                     <Table.Body>
                         <Displaystocks
                             stockTable = {stockTable}
-                            setStockTable = {setStockTable}
                             stocks={stocks}
                             setStocks={setStocks}
                         />
                         <Table.Row>
-                            <Table.Cell>Total Results</Table.Cell>
+                            <Table.Cell>Total Results </Table.Cell>
                             <Table.Cell>{stockTable.hasOwnProperty('exp_return') && stockTable['exp_return']}</Table.Cell>
                             <Table.Cell>{stockTable.hasOwnProperty('stdev') && stockTable['stdev']}</Table.Cell>
                             <Table.Cell></Table.Cell>
