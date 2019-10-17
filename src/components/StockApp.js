@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import Search from './Search';
 import Displaystocks from './DisplayStocks';
 import axios from 'axios'
-import { Grid, Button, Table} from 'semantic-ui-react';
+import { Segment,Header,Grid, Button, Table} from 'semantic-ui-react';
 const StockApp = ()=>{
     const [stocks, setStocks] = useState([]);
     const [stockTable, setStockTable] = useState({});
@@ -75,16 +75,21 @@ const StockApp = ()=>{
         </Grid>
 
     return (
-        <div>
-            <h1>Discover Your Best.
-                Find your optimal stock portfolio based on modern portfolio theory.
-            </h1>
+        <Segment padded>
+            <Header as='h2' textAlign='center'>Discover Your Best.
+            </Header>
+            <Header as='h1' textAlign='center'>
+            Find your optimal stock portfolio based on modern portfolio theory.
+            </Header>
+            <Header as='h3' textAlign='center'>
+                Enter stock combinations and find out what percentage of your portfolio a particular stock should take.
+            </Header>
 
            <div> 
                {display}
            </div>
             
-        </div>
+        </Segment>
         
     )
 }
