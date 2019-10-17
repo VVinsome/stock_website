@@ -2,20 +2,24 @@ import React, {useState} from 'react';
 import Search from './Search';
 import Displaystocks from './DisplayStocks';
 import axios from 'axios'
-import {Grid, Button, Table} from 'semantic-ui-react';
+import { Grid, Button, Table} from 'semantic-ui-react';
 const StockApp = ()=>{
     const [stocks, setStocks] = useState([]);
     const [stockTable, setStockTable] = useState({});
-
+    const [loading, setLoading] = useState(false);
 
     const handleCalculate = (e)=>{
         e.preventDefault();
+        setLoading(true);
         const searchURL = 'https://stock-back-api.herokuapp.com/optimize/' + stocks.join(',') + '?format=json'
         axios
         .get(searchURL)
         .then(response=>{
             console.log(response);
             setStockTable(response.data);
+        })
+        .then(response=>{
+            setLoading(false);
         });
 
     }
@@ -33,7 +37,7 @@ const StockApp = ()=>{
                     <Table.Header>
                         <Table.Row>
                             <Table.HeaderCell>Symbol</Table.HeaderCell>
-                            <Table.HeaderCell>Return</Table.HeaderCell>
+                            <Table.HeaderCell>Log Return %</Table.HeaderCell>
                             <Table.HeaderCell>StDev</Table.HeaderCell>
                             <Table.HeaderCell>Optimal Asset %</Table.HeaderCell>
                             <Table.HeaderCell>Close</Table.HeaderCell>
@@ -47,7 +51,7 @@ const StockApp = ()=>{
                         />
                         <Table.Row>
                             <Table.Cell>Total Results </Table.Cell>
-                            <Table.Cell>{stockTable.hasOwnProperty('exp_return') && stockTable['exp_return']}</Table.Cell>
+                            <Table.Cell>{stockTable.hasOwnProperty('exp_return') && stockTable['exp_return'] * 100}</Table.Cell>
                             <Table.Cell>{stockTable.hasOwnProperty('stdev') && stockTable['stdev']}</Table.Cell>
                             <Table.Cell></Table.Cell>
                             <Table.Cell></Table.Cell>
@@ -59,7 +63,12 @@ const StockApp = ()=>{
 
             </Grid.Row>
             <Grid.Row>
-                <Button onClick = {handleCalculate}>
+                <Button 
+                    onClick = {handleCalculate}
+                    disabled = {loading}
+                    loading = {loading}
+
+                >
                     Calculate All
                 </Button>
             </Grid.Row>

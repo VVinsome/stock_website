@@ -8,7 +8,7 @@ const Search = ({stocks, setStocks})=>{
     const [message, setMessage] = useState('');
     const [suggestions, setSuggestions] = useState([]);
     const stockDisplayLimit = 10;
-    const errorState = message? 'error' : '';
+    const errorS = message? 'error' : '';
     
     useEffect(()=>{
     const url = 'https://cloud.iexapis.com/stable/';
@@ -100,7 +100,7 @@ const Search = ({stocks, setStocks})=>{
                     {renderErrorMessage()}
                     <Input
                         className = 'SearchBar' 
-                        className={errorState}
+                        className={errorS}
                         icon ={
                             <Icon name='add'  inverted circular link color = 'blue' 
                             onClick ={()=>{addHelper(query)}}
