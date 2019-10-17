@@ -10,7 +10,7 @@
     "react-scripts": "3.1.1",
     "semantic-ui-css": "^2.4.1",
     "semantic-ui-react": "^0.88.1",
-    "eslint-utils":">=1.4.1"
+    "eslint-utils": ">=1.4.1"
   },
   "scripts": {
     "start": "react-scripts start",

@@ -37,7 +37,7 @@ const StockApp = ()=>{
                     <Table.Header>
                         <Table.Row>
                             <Table.HeaderCell>Symbol</Table.HeaderCell>
-                            <Table.HeaderCell>Log Return %</Table.HeaderCell>
+                            <Table.HeaderCell>Log Return % ANNUAL</Table.HeaderCell>
                             <Table.HeaderCell>StDev</Table.HeaderCell>
                             <Table.HeaderCell>Optimal Asset %</Table.HeaderCell>
                             <Table.HeaderCell>Close</Table.HeaderCell>
